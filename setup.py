@@ -1,4 +1,6 @@
 from setuptools import setup
+import os
+from glob import glob
 
 package_name = 'vibelab_autoracer'
 
@@ -10,6 +12,7 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        (os.path.join('share', package_name, 'launch'), glob(os.path.join('launch', '*launch.[pxy][yma]*'))),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -21,6 +24,7 @@ setup(
     entry_points={
         'console_scripts': [
             'autoracer = vibelab_autoracer.autoracer:main',
+            'map_scan_tf_node = vibelab_autoracer.map_scan_tf_node:main',
             'csicam_publisher = vibelab_autoracer.csicam_publisher:main',
             'gstcam_publisher = vibelab_autoracer.gstcam_publisher:main',
             'cmd_vel_servo = vibelab_autoracer.cmd_vel_servo:main',

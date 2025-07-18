@@ -38,7 +38,7 @@ class CompressedCameraPublisher(Node):
         msg.data = jpeg.tobytes()
 
         self.publisher.publish(msg)
-        self.get_logger().info("Published compressed frame")
+        #self.get_logger().info("Published compressed frame")
 
 def main(args=None):
     rclpy.init(args=args)
