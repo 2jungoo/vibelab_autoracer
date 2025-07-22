@@ -10,11 +10,9 @@ class CompressedCameraPublisher(Node):
 
         gst_pipeline = (
             "nvarguscamerasrc ! "
-            "video/x-raw(memory:NVMM), width=1280, height=720, framerate=10/1 ! "
-            "nvvidconv ! "
-            "video/x-raw, format=BGRx ! "
-            "videoconvert ! "
-            "video/x-raw, format=BGR ! appsink"
+            "video/x-raw(memory:NVMM), width=640, height=480, framerate=5/1 ! "
+            "nvjpegenc ! "
+            "appsink"
         )
         self.cap = cv2.VideoCapture(gst_pipeline, cv2.CAP_GSTREAMER)
 
@@ -26,17 +24,15 @@ class CompressedCameraPublisher(Node):
             self.get_logger().warn("Failed to capture frame")
             return
 
-        # OpenCV 이미지 BGR -> JPEG 압축
-        ret, jpeg = cv2.imencode('.jpg', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 80])
+        ret, jpeg = self.cap.read()
         if not ret:
-            self.get_logger().warn("Failed to encode frame")
+            self.get_logger().warn("Failed to capture frame")
             return
 
         msg = CompressedImage()
         msg.header.stamp = self.get_clock().now().to_msg()
         msg.format = "jpeg"
         msg.data = jpeg.tobytes()
-
         self.publisher.publish(msg)
         #self.get_logger().info("Published compressed frame")
 
@@ -53,4 +49,5 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
+
 
