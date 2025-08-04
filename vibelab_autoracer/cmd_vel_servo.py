@@ -15,8 +15,8 @@ class RCCarController(Node):
         self.pca.frequency = 50  # 50Hz 서보 PWM
 
         # 채널 설정
-        self.throttle_channel = 0  # 전후진
-        self.steering_channel = 1  # 조향
+        self.throttle_channel = 4  # 전후진
+        self.steering_channel = 0  # 조향
 
         # 서보 PWM 설정 (tick 기준: 0~65535)
         self.throttle_neutral = 1500  # us (중립)
